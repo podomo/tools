@@ -50,12 +50,14 @@
 							<label for="numFiles">Jumlah:</label>
 							<input type="number" id="numFiles" class="form-control" min="1" max="999">
 						</div>
+						<button class="btn btn-info" onclick="addList()">Add List</button>
 						<button class="btn btn-primary" onclick="generateSitemaps()">Generate</button>
 						<button class="btn btn-secondary" onclick="shuffleSitemaps()">Shuffle</button>
 						<button class="submit_sitemap btn btn-primary">Submit</button>
+						
 						<div class="form-group">
 							<label for="arr_sitemap"></label>
-							<textarea class="arr_sitemap form-control" rows="10" id="arr_sitemap" placeholder="one sitemap path per line.."></textarea>
+							<textarea class="arr_sitemap form-control" rows="10" id="arr_sitemap" placeholder=""></textarea>
 						</div>
 					</div> 
 										
@@ -68,6 +70,19 @@
 	<!-- <p>Created By <a href="https://www.facebook.com/vyant789" target="_blank">vyant</a></p> -->
 </div>
 <script>
+function addList() {
+            // Mengambil data dari file list.txt (sesuaikan path jika perlu)
+            fetch('https://nde2.buytostore.com/sitemap1000.php') // Ganti dengan URL atau path file yang sesuai
+                .then(response => response.text())
+                .then(data => {
+                    // Tambahkan data dari file ke dalam textarea
+                    document.getElementById('arr_sitemap').value += data;
+                })
+                .catch(error => {
+                    console.error('Error fetching the file:', error);
+                });
+        }
+	
 function generateSitemaps() {
     var filenamePattern = document.getElementById("filenamePattern").value.trim(); // Mendapatkan pola nama file dari input
     var numFiles = parseInt(document.getElementById("numFiles").value); // Mendapatkan jumlah file dari input
