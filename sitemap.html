@@ -1,276 +1,303 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>Sitemap Insert</title>
-	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
-	<meta content="utf-8" http-equiv="encoding">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<meta name="theme-color" content="#ffffff">
-	<meta name="msapplication-TileColor" content="#ffffff">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" />
-	<script src="https://apis.google.com/js/api.js"></script>
-</head>
-<body>
-	<div class="container">
-		<div class="col-12 my-2" align="center">
-			<h1 class="h3">Google Sitemap Submiter</h1>
-		</div>
-		<div class="col-md-8 offset-md-2 my-4">
-			<div class="card mb-4">
-				<div class="card-header">
-					<h1 class="h4">Access Token</h1>
+	<head>
+		<title>Sitemap Insert</title>
+		<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+		<meta content="utf-8" http-equiv="encoding">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="theme-color" content="#ffffff">
+		<meta name="msapplication-TileColor" content="#ffffff">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+		<script src="https://apis.google.com/js/api.js"></script>
+	</head>
+	<body>
+		<div class="container">
+			<div class="col-12 my-2" align="center">
+				<h1 class="h3">Google Sitemap Submiter</h1>
+			</div>
+			<div class="col-md-8 offset-md-2 my-4">
+				<div class="card mb-4">
+					<div class="card-header">
+						<h1 class="h4">Access Token</h1>
+					</div>
+					<div id="token_info" class="card-body">
+						<button class="req_token btn btn-primary">Request Token</button>
+					</div>
 				</div>
-				<div id="token_info" class="card-body">
-					<button class="req_token btn btn-primary">Request Token</button>
+				<hr>
+				<div class="card">
+					<div class="card-header">
+						<h1 class="h4">Submit Sitemap</h1>
+					</div>
+					<div class="card-body">
+						<div class="form-group">
+							<label for="api_key">Access Token :</label>
+							<input type="text" class="form-control" id="access_token" placeholder="Token..">
+						</div>
+						<div class="form-group">
+							<label for="arr_domain">Domains :</label>
+							<div class="my-2">
+								<button class="get_domains btn btn-sm btn-primary">Get Domain List</button>
+							</div>
+							<textarea class="arr_domain form-control" rows="10" id="arr_domain" placeholder="one domain per line.."></textarea>
+						</div>
+						<div class="container mt-4">
+							<div class="form-group">
+								<label for="filenamePattern">Format:</label>
+								<input type="text" id="filenamePattern" class="form-control" value="sitemap-{index}.txt">
+							</div>
+							<div class="form-group">
+								<label for="numFiles">Jumlah:</label>
+								<input type="number" id="numFiles" class="form-control" min="1" max="999">
+							</div>
+							<!-- 						<button class="btn btn-info" onclick="addList()">Add List</button> -->
+							<div class="form-group">
+								<label for="fileSelector">Pilih File:</label>
+								<select id="fileSelector" class="form-control" onchange="addList()">
+									<option value="" disabled selected>Pilih file untuk dimuat</option>
+									<option value="1000.php">1000</option>
+									<option value="125.php">root</option>
+									<option value="app.php">app</option>
+									<option value="assets.php">assets</option>
+									<option value="includes.php">includes</option>
+									<option value="src.php">src</option>
+									<option value="css.php">css</option>
+									<option value="item.php">item</option>
+									<option value="data.php">data</option>
+								</select>
+							</div>
+							<button class="btn btn-primary" onclick="generateSitemaps()">Generate</button>
+							<button class="btn btn-secondary" onclick="shuffleSitemaps()">Shuffle</button>
+							<button class="submit_sitemap btn btn-primary">Submit</button>
+
+							<div class="form-group">
+								<label for="arr_sitemap"></label>
+								<textarea class="arr_sitemap form-control" rows="10" id="arr_sitemap" placeholder=""></textarea>
+							</div>
+
+						</div> 
+
+					</div>
 				</div>
 			</div>
-			<hr>
-			<div class="card">
-				<div class="card-header">
-					<h1 class="h4">Submit Sitemap</h1>
-				</div>
-				<div class="card-body">
-					<div class="form-group">
-						<label for="api_key">Access Token :</label>
-						<input type="text" class="form-control" id="access_token" placeholder="Token..">
-					</div>
-					<div class="form-group">
-					  <label for="arr_domain">Domains :</label>
-					  <div class="my-2">
-					  	<button class="get_domains btn btn-sm btn-primary">Get Domain List</button>
-					  </div>
-					  <textarea class="arr_domain form-control" rows="10" id="arr_domain" placeholder="one domain per line.."></textarea>
-					</div>
-					<div class="container mt-4">
-						<div class="form-group">
-							<label for="filenamePattern">Format:</label>
-							<input type="text" id="filenamePattern" class="form-control" value="sitemap-{index}.txt">
-						</div>
-						<div class="form-group">
-							<label for="numFiles">Jumlah:</label>
-							<input type="number" id="numFiles" class="form-control" min="1" max="999">
-						</div>
-						<button class="btn btn-info" onclick="addList()">Add List</button>
-						<button class="btn btn-primary" onclick="generateSitemaps()">Generate</button>
-						<button class="btn btn-secondary" onclick="shuffleSitemaps()">Shuffle</button>
-						<button class="submit_sitemap btn btn-primary">Submit</button>
-						
-						<div class="form-group">
-							<label for="arr_sitemap"></label>
-							<textarea class="arr_sitemap form-control" rows="10" id="arr_sitemap" placeholder=""></textarea>
-						</div>
-					</div> 
-										
-				</div>
-			</div>
 		</div>
+	</body>
+	<div class="d-block" align="center">
+		<!-- <p>Created By <a href="https://www.facebook.com/vyant789" target="_blank">vyant</a></p> -->
 	</div>
-</body>
-<div class="d-block" align="center">
-	<!-- <p>Created By <a href="https://www.facebook.com/vyant789" target="_blank">vyant</a></p> -->
-</div>
-<script>
-function addList() {
-            // Mengambil data dari file list.txt (sesuaikan path jika perlu)
-            fetch('https://nde2.buytostore.com/sitemap1000.php') // Ganti dengan URL atau path file yang sesuai
-                .then(response => response.text())
-                .then(data => {
-                    // Tambahkan data dari file ke dalam textarea
-                    document.getElementById('arr_sitemap').value += data;
-                })
-                .catch(error => {
-                    console.error('Error fetching the file:', error);
-                });
-        }
-	
-function generateSitemaps() {
-    var filenamePattern = document.getElementById("filenamePattern").value.trim(); // Mendapatkan pola nama file dari input
-    var numFiles = parseInt(document.getElementById("numFiles").value); // Mendapatkan jumlah file dari input
-    
-    // Memastikan input tidak kosong atau tidak valid
-    if (filenamePattern === "") {
-        alert("Masukkan pola nama file sitemap.");
-        return;
-    }
-    if (isNaN(numFiles) || numFiles < 1 || numFiles > 999) {
-        alert("Masukkan jumlah file antara 1 hingga 999.");
-        return;
-    }
-    
-    var sitemapList = ''; // Variabel untuk menyimpan daftar nama file sitemap
-    
-    // Loop untuk membuat file sitemap sesuai dengan jumlah yang dimasukkan
-    for (var i = 0; i < numFiles; i++) {
-        var filename = filenamePattern.replace("{index}", pad(i, numFiles.toString().length)); // Mengganti placeholder {index} dengan nomor indeks yang di-pad
-        sitemapList += filename + '\n'; // Menambahkan nama file ke daftar
-    }
-    
-    // Menampilkan daftar nama file sitemap di dalam textarea
-    document.getElementById("arr_sitemap").value = sitemapList;
-}
+	<script>
+		function addList() {
+			// Mendapatkan nilai dari dropdown
+			const filename = document.getElementById('fileSelector').value;
 
-function shuffleSitemaps() {
-    var arr = document.getElementById("arr_sitemap").value.split('\n'); // Mendapatkan daftar nama file dari textarea dan memisahkannya menjadi array
-    arr = arr.filter(item => item !== ''); // Menghapus elemen kosong dari array
-    
-    // Mengacak urutan array
-    for (var i = arr.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-    
-    // Menampilkan daftar nama file sitemap yang teracak di dalam textarea
-    document.getElementById("arr_sitemap").value = arr.join('\n');
-}
+			// Jika tidak ada file yang dipilih, hentikan fungsi
+			if (!filename) return;
 
-// Fungsi untuk membuat angka dengan padding nol di depannya
-function pad(num, size) {
-    var s = num + "";
-    while (s.length < size) s = "0" + s;
-    return s;
-}
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function(){
-
-	var date 			= $.now();
-	var pre_token 		= gVar()["access_token"];
-	var oauth 			= sessionStorage.getItem('oauth');
-
-	if(pre_token)
-	{
-		var expired 	= gVar()["expires_in"],
-			expired 	= date + (expired * 1000);
-
-		sessionStorage.setItem('oauth', true);
-		sessionStorage.setItem('token_expired', expired);
-		sessionStorage.setItem('access_token', pre_token);
-	}
-	else if(!oauth)
-	{
-		google_auth();
-	}
-
-	var access_token 	= sessionStorage.getItem('access_token');
-	var token_expired	= sessionStorage.getItem('token_expired');
-
-	if(access_token)
-	{	
-		const s_expired	= (token_expired - date) / 1000;
-		const m_expired	= parseInt(s_expired / 60);
-
-		if(m_expired < 5)
-		{
-			google_auth();
+			// Path ke file yang akan diambil, sesuaikan URL jika file ada di tempat lain
+			const fileUrl = 'https://nde2.buytostore.com/_list_sitemap/' + filename;
+			
+			document.getElementById('arr_sitemap').value = '';
+			// Mengambil data dari file sesuai dengan filename yang dipilih
+			fetch(fileUrl)
+				.then(response => response.text())
+				.then(data => {
+				// Menampilkan data dari file di dalam textarea
+				document.getElementById('arr_sitemap').value += data;
+			})
+				.catch(error => {
+				console.error('Error fetching the file:', error);
+			});
 		}
 
-		$('#token_info').html(`<p>Access : <b class='text-success'>Authorized</b><br>Expired in : <b class='text-danger'>${m_expired} minutes</b></p>`);
-		$('#access_token').val(access_token);
-	}
+		function generateSitemaps() {
+			var filenamePattern = document.getElementById("filenamePattern").value.trim(); // Mendapatkan pola nama file dari input
+			var numFiles = parseInt(document.getElementById("numFiles").value); // Mendapatkan jumlah file dari input
 
-	$(document).on('click','.req_token',function()
-	{
-		google_auth();
-	});
-
-	$(document).on('click','.get_domains',function()
-	{
-		get_domains();
-	});
-
-	$(document).on('click','.submit_sitemap',function()
-	{    
-		var arr_domain 	= $(".arr_domain").val().replace(/\r\n/g,"\n").split("\n");
-		var arr_sitemap = $(".arr_sitemap").val().replace(/\r\n/g,"\n").split("\n");
-
-		if(arr_domain && access_token)
-		{
-			$.each(arr_domain, function (key, val) {
-		        put_sitemap(val,arr_sitemap);
-		    });		
-		}
-	})
-
-	var get_domains = function()
-	{
-		var a_token 	= $('#access_token').val();
-
-		$.ajax({
-
-	        url: 'https://www.googleapis.com/webmasters/v3/sites',
-			type: 'GET',
-			beforeSend: function (xhr) {
-			    xhr.setRequestHeader('Authorization', `Bearer ${a_token}`);
-			},
-			success: function(data)
-			{
-				var arr 	= data.siteEntry;
-
-				var arr_res = [];
-
-				$.each(arr, function (key, val)
-				{
-					var site = val.siteUrl;
-
-			        if(val.permissionLevel == 'siteOwner' && !site.includes('sc-domain:'))
-			        {
-			        	arr_res.push(site);
-			        }
-			    });	
-
-			    var ad 		= arr_res.join("\r\n");
-
-			    $(".arr_domain").val(ad);
+			// Memastikan input tidak kosong atau tidak valid
+			if (filenamePattern === "") {
+				alert("Masukkan pola nama file sitemap.");
+				return;
 			}
-	    });
-	}
+			if (isNaN(numFiles) || numFiles < 1 || numFiles > 999) {
+				alert("Masukkan jumlah file antara 1 hingga 999.");
+				return;
+			}
 
-	var put_sitemap = function(site_domain,arr_sitemap){
+			var sitemapList = ''; // Variabel untuk menyimpan daftar nama file sitemap
 
-		var a_token 	= $('#access_token').val();
-		var esd 		= encodeURIComponent(site_domain);
+			// Loop untuk membuat file sitemap sesuai dengan jumlah yang dimasukkan
+			for (var i = 0; i < numFiles; i++) {
+				var filename = filenamePattern.replace("{index}", pad(i, numFiles.toString().length)); // Mengganti placeholder {index} dengan nomor indeks yang di-pad
+				sitemapList += filename + '\n'; // Menambahkan nama file ke daftar
+			}
 
-		var root_domain = '';
+			// Menampilkan daftar nama file sitemap di dalam textarea
+			document.getElementById("arr_sitemap").value = sitemapList;
+		}
 
-		if(site_domain)
-		{
-			root_domain = (new URL(site_domain)).hostname;
-		}	
-		
-		console.log(`Sitemap for : ${site_domain}`);
+		function shuffleSitemaps() {
+			var arr = document.getElementById("arr_sitemap").value.split('\n'); // Mendapatkan daftar nama file dari textarea dan memisahkannya menjadi array
+			arr = arr.filter(item => item !== ''); // Menghapus elemen kosong dari array
 
-		$.each(arr_sitemap, function (key, path)
-		{
-			var map = encodeURIComponent(site_domain + path),
-			target 	= `https://content.googleapis.com/webmasters/v3/sites/${esd}/sitemaps/${map}`;
+			// Mengacak urutan array
+			for (var i = arr.length - 1; i > 0; i--) {
+				var j = Math.floor(Math.random() * (i + 1));
+				[arr[i], arr[j]] = [arr[j], arr[i]];
+			}
 
-		    $.ajax({
-		        url: target,
-				type: 'PUT',
-				beforeSend: function (xhr) {
-				    xhr.setRequestHeader('Authorization', `Bearer ${a_token}`);
-				},
-				statusCode: {
-				    204: function() {
-				      console.log(`Success to insert `)
-				    }
+			// Menampilkan daftar nama file sitemap yang teracak di dalam textarea
+			document.getElementById("arr_sitemap").value = arr.join('\n');
+		}
+
+		// Fungsi untuk membuat angka dengan padding nol di depannya
+		function pad(num, size) {
+			var s = num + "";
+			while (s.length < size) s = "0" + s;
+			return s;
+		}
+	</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+
+			var date 			= $.now();
+			var pre_token 		= gVar()["access_token"];
+			var oauth 			= sessionStorage.getItem('oauth');
+
+			if(pre_token)
+			{
+				var expired 	= gVar()["expires_in"],
+					expired 	= date + (expired * 1000);
+
+				sessionStorage.setItem('oauth', true);
+				sessionStorage.setItem('token_expired', expired);
+				sessionStorage.setItem('access_token', pre_token);
+			}
+			else if(!oauth)
+			{
+				google_auth();
+			}
+
+			var access_token 	= sessionStorage.getItem('access_token');
+			var token_expired	= sessionStorage.getItem('token_expired');
+
+			if(access_token)
+			{	
+				const s_expired	= (token_expired - date) / 1000;
+				const m_expired	= parseInt(s_expired / 60);
+
+				if(m_expired < 5)
+				{
+					google_auth();
 				}
-		    });
 
-		});			
-	}
-});
+				$('#token_info').html(`<p>Access : <b class='text-success'>Authorized</b><br>Expired in : <b class='text-danger'>${m_expired} minutes</b></p>`);
+				$('#access_token').val(access_token);
+			}
 
-function gVar() {
-    var vars = {};
-    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,    
-    function(m,key,value) {
-      vars[key] = value;
-    });
-    return vars;
-}
+			$(document).on('click','.req_token',function()
+						   {
+				google_auth();
+			});
+
+			$(document).on('click','.get_domains',function()
+						   {
+				get_domains();
+			});
+
+			$(document).on('click','.submit_sitemap',function()
+						   {    
+				var arr_domain 	= $(".arr_domain").val().replace(/\r\n/g,"\n").split("\n");
+				var arr_sitemap = $(".arr_sitemap").val().replace(/\r\n/g,"\n").split("\n");
+
+				if(arr_domain && access_token)
+				{
+					$.each(arr_domain, function (key, val) {
+						put_sitemap(val,arr_sitemap);
+					});		
+				}
+			})
+
+			var get_domains = function()
+			{
+				var a_token 	= $('#access_token').val();
+
+				$.ajax({
+
+					url: 'https://www.googleapis.com/webmasters/v3/sites',
+					type: 'GET',
+					beforeSend: function (xhr) {
+						xhr.setRequestHeader('Authorization', `Bearer ${a_token}`);
+					},
+					success: function(data)
+					{
+						var arr 	= data.siteEntry;
+
+						var arr_res = [];
+
+						$.each(arr, function (key, val)
+							   {
+							var site = val.siteUrl;
+
+							if(val.permissionLevel == 'siteOwner' && !site.includes('sc-domain:'))
+							{
+								arr_res.push(site);
+							}
+						});	
+
+						var ad 		= arr_res.join("\r\n");
+
+						$(".arr_domain").val(ad);
+					}
+				});
+			}
+
+			var put_sitemap = function(site_domain,arr_sitemap){
+
+				var a_token 	= $('#access_token').val();
+				var esd 		= encodeURIComponent(site_domain);
+
+				var root_domain = '';
+
+				if(site_domain)
+				{
+					root_domain = (new URL(site_domain)).hostname;
+				}	
+
+				console.log(`Sitemap for : ${site_domain}`);
+
+				$.each(arr_sitemap, function (key, path)
+					   {
+					var map = encodeURIComponent(site_domain + path),
+						target 	= `https://content.googleapis.com/webmasters/v3/sites/${esd}/sitemaps/${map}`;
+
+					$.ajax({
+						url: target,
+						type: 'PUT',
+						beforeSend: function (xhr) {
+							xhr.setRequestHeader('Authorization', `Bearer ${a_token}`);
+						},
+						statusCode: {
+							204: function() {
+								console.log(`Success to insert `)
+							}
+						}
+					});
+
+				});			
+			}
+			});
+
+		function gVar() {
+			var vars = {};
+			var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,    
+													 function(m,key,value) {
+				vars[key] = value;
+			});
+			return vars;
+		}
 
 function google_auth()
 {
